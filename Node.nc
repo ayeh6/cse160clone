@@ -985,7 +985,7 @@ implementation{
 			sendTime = call LocalTime.get();
 			//send SYN packet
 			if (call Transport.connect(fd, &serverAddress) == SUCCESS) {
-        			dbg(TRANSPORT_CHANNEL, "Node %d set as client with source port %d, and destination %d at their port %d\n", TOS_NODE_ID, sourcePort, dest, destPort);
+        			//dbg(TRANSPORT_CHANNEL, "Node %d set as client with source port %d, and destination %d at their port %d\n", TOS_NODE_ID, sourcePort, dest, destPort);
 			}
 		}
 	}

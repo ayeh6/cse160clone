@@ -121,6 +121,10 @@ interface Transport{
     * @return socket_t - returns SUCCESS if you are able to attempt
     *    a closure with the fd passed, else return FAIL.
     */
+
+   command error_t connectUser(socket_t fd, socket_addr_t *addr);
+
+
    command error_t close(socket_t fd);
 
    /**
