@@ -36,8 +36,8 @@ implementation {
 		fd = call Sockets.size();
 		for(i = 0; i < 128; i++)
 		{
-			insert.sendBuff[i] = '\0';
-			insert.rcvdBuff[i] = '\0';
+			insert.sendBuff[i] = 255;
+			insert.rcvdBuff[i] = 255;
 		}
 		call Sockets.pushback(insert);
 	}
@@ -152,8 +152,8 @@ implementation {
 		LinkState destination;
 		pack write;
                 uint16_t sockLen;
-		char send[8];
-		char sendBtemp[128];
+		uint8_t send[8];
+		uint8_t sendBtemp[128];
                 uint16_t i,j,at,buffcount,next;
                 uint8_t buffsize, buffable, buffto, lastAckd, sending;
                 bool found = FALSE;
@@ -162,11 +162,11 @@ implementation {
 		sockLen = call Sockets.size();
 		for(i = 0; i < 8; i++)
 		{
-			send[i] = '\0';
+			send[i] = 255;
 		}
 		for(i = 0; i < 128; i++)
 		{
-			sendBtemp[i] = '\0';
+			sendBtemp[i] = 255;
 		}
                 for(i = 0; i < sockLen; i++)
                 {
@@ -474,23 +474,23 @@ implementation {
 
 			//dbg(TRANSPORT_CHANNEL, "printing out rcvdBuff\n");
 			i = 0;
-			if(temp.rcvdBuff[j-1] == '\n')
+			while(temp.rcvdBuff[i] != 255)
 			{
-				while(temp.rcvdBuff[i] != '\0')
+				printf("%d ", temp.rcvdBuff[i]);
+				if(i%8 == 0 && i != 0)
 				{
-					printf("%d ", temp.rcvdBuff[i]);
-					temp.rcvdBuff[i] = '\0';
-					temp.effectiveWindow++;
-					i++;
+					printf("\n");
 				}
-				temp.effectiveWindow = 128;
-				temp.nextExpected = 0;
-				for(i = 0; i < 128; i++)
-				{
-					temp.rcvdBuff[i] = '\0';
-				}
-				printf("\n");
+				temp.effectiveWindow++;
+				i++;
 			}
+			temp.effectiveWindow = 128;
+			temp.nextExpected = 0;
+			for(i = 0; i < 128; i++)
+			{
+				temp.rcvdBuff[i] = 255;
+			}
+			printf("\n");
 			//pushing stuff
                         while(!call Sockets.isEmpty())
                         {
